@@ -173,6 +173,86 @@ See `docs/building-skills.md` for a full guide.
 
 ---
 
+## Advanced: Knowledge Graph Integration
+
+The core Business Brain system handles **behavior** — what your agents know, remember, and can do. Graphify adds a second layer: **knowledge connections** — automatically mapping the relationships between every note, document, decision, and problem in your business.
+
+These solve different problems and work together.
+
+| Business Brain (CLAUDE.md, memory.md, skills) | Graphify |
+|---|---|
+| Defines how agents behave | Discovers how knowledge connects |
+| Answers: "what does this agent remember?" | Answers: "how does X relate to Y?" |
+| Built by working with agents over time | Built automatically from your files |
+| Behavioral consistency | Cross-department pattern discovery |
+
+### What Graphify Does
+
+Point graphify at your business folder and it processes every file — markdown notes, operations docs, project overviews, memory files, PDFs, even images. It extracts entities and relationships, clusters them into communities, and produces three outputs:
+
+- **`graph.html`** — an interactive, explorable visualization of everything in your business brain and how it connects
+- **`graph.json`** — a queryable graph you can ask questions against in natural language
+- **`GRAPH_REPORT.md`** — a written audit of what's in the graph, what's most connected, and what surprising connections were found
+
+### Why This Matters for Business
+
+Your business brain accumulates fast. Within a few months you have department notes, memory files, skills, process docs, and meeting notes — dozens of files across departments. Graphify makes that searchable and connected automatically.
+
+Examples of what you can ask:
+
+```bash
+graphify query "what are all the open problems across departments?"
+graphify query "how does our pricing strategy relate to customer acquisition?"
+graphify query "what has the finance agent learned that's relevant to operations?"
+graphify path "production cost" "client retention"
+```
+
+Instead of reading five files to piece together a cross-department insight, you ask once and get the connection.
+
+### Setup
+
+```bash
+# From your business folder — process all files and build the graph
+graphify update .
+
+# Query the graph in natural language
+graphify query "what is currently open or in progress?"
+
+# Open the interactive visualization
+open graphify-out/graph.html
+
+# Rebuild a navigable wiki from your graph (weekly recommended)
+graphify . --wiki
+```
+
+After running `graphify update .`, the graph stays current incrementally — only changed files are re-processed on subsequent runs.
+
+### Connecting It to Your Agents
+
+In your business `CLAUDE.md`, add a graphify reference so agents know to use it for cross-department questions:
+
+```markdown
+## Knowledge Graph
+
+A graph of this business brain is available at `graphify-out/`.
+For cross-department questions or pattern discovery, query it:
+`graphify query "your question here"`
+```
+
+### The Combined System
+
+```
+Business Brain (behavior layer)     Graphify (knowledge layer)
+─────────────────────────────────   ─────────────────────────────
+CLAUDE.md    → agent knows its role  graph.json  → everything connected
+memory.md    → agent remembers prefs graph.html  → visual map of the business
+skills       → agent runs SOPs       GRAPH_REPORT → patterns and surprises
+```
+
+Used together: your agents behave consistently and learn over time, while graphify gives you a bird's-eye view of your entire business knowledge — automatically updated as you work.
+
+---
+
 ## Who This Is For
 
 - Founders and operators running small businesses (1–20 people)
